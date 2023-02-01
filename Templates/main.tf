@@ -1,15 +1,15 @@
 
 locals {
-  resource_group="app-grp"
-  location="North Europe" 
+  resource_group="HybridEnv"
+  location="East US" 
   key_vault_name="Secrets" 
   key_vault_RG="terraformRG"
   key_vault_secreat_name="DBpassword"
-  ASP_name="app-plan1000"
-  web_app_name="webapp5539050"
-  sql_server_name="appserver6008089"
-  sql_db_name="appdb"
-  sql_admin_user_name="sqladmin"
+  ASP_name="DevOpsInHybridEnv-plan"
+  web_app_name="DevOpsInHybridEnv"
+  sql_server_name="hybrid-server"
+  sql_db_name="DevOpsInHybridEnv-db"
+  sql_admin_user_name="dbadmin"
 
 }
 /*data "azurerm_client_config" "current" {}
@@ -50,7 +50,7 @@ resource "azurerm_app_service" "webapp" {
 resource "azurerm_sql_server" "app_server" {
   name                         = local.sql_server_name
   resource_group_name          = azurerm_resource_group.app_grp.name
-  location                     = "North Europe"  
+  location                     = local.location  
   version             = "12.0"
   administrator_login          = local.sql_admin_user_name
   administrator_login_password = "Azure123"
@@ -59,7 +59,7 @@ resource "azurerm_sql_server" "app_server" {
 resource "azurerm_sql_database" "app_db" {
   name                = local.sql_db_name
   resource_group_name = azurerm_resource_group.app_grp.name
-  location            = "North Europe"  
+  location            = local.location  
   server_name         = azurerm_sql_server.app_server.name
    depends_on = [
      azurerm_sql_server.app_server
@@ -77,13 +77,4 @@ resource "azurerm_sql_firewall_rule" "app_server_firewall_rule_Azure_services" {
   ]
 }
 
-resource "azurerm_sql_firewall_rule" "app_server_firewall_rule_Client_IP" {
-  name                = "app-server-firewall-rule-Allow-Client-IP"
-  resource_group_name = azurerm_resource_group.app_grp.name
-  server_name         = azurerm_sql_server.app_server.name
-  start_ip_address    = "4.246.169.117"
-  end_ip_address      = "4.246.169.117"
-  depends_on=[
-    azurerm_sql_server.app_server
-  ]
 }
