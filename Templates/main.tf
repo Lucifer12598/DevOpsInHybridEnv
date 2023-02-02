@@ -1,6 +1,6 @@
 
 locals {
-  resource_group="HybridEnv"
+  resource_group="HybridEnv1"
   location="East US" 
   key_vault_name="Secrets" 
   key_vault_RG="terraformRG"
