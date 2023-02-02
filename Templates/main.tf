@@ -77,4 +77,3 @@ resource "azurerm_sql_firewall_rule" "app_server_firewall_rule_Azure_services" {
   ]
 }
 
-}
